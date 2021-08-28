@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'Adine Kirnberg';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('~/static/Adine-Kirnberg.ttf') format('truetype');
+}
