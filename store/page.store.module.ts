@@ -11,6 +11,11 @@ export default class PageStoreModule extends VuexModule
   title: string =  ''
   previous: string = '/'
   validIsVisible: boolean = false
+  onValidMethod: () => void = () => {}
+
+  get onValid() {
+    return this.onValidMethod
+  }
 
   @Mutation
   commitTitle(title: string) {
@@ -27,6 +32,11 @@ export default class PageStoreModule extends VuexModule
     this.validIsVisible = validIsVisible
   }
 
+  @Mutation
+  commitOnValid(onValid: () => void) {
+    this.onValidMethod = onValid
+  }
+
   @Action
   setTitle(title: string) {
     this.commitTitle(title)
@@ -40,5 +50,10 @@ export default class PageStoreModule extends VuexModule
   @Action
   setValidIsVisible(validIsVisible: boolean) {
     this.commitValidIsVisible(validIsVisible)
+  }
+
+  @Action
+  setOnValid(onValid: () => void) {
+    this.commitOnValid(onValid)
   }
 }

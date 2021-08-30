@@ -6,7 +6,6 @@ import TableInterface from "~/models/table/table.interface";
 import { DependencyInjectionEnum } from "~/plugins/dependencie-injection.enum";
 import TablePersisterInterface from "~/services/persisters/table/table.persister.interface";
 import TableProviderInterface from "~/services/providers/table/table.provider.interface";
-import { Getter } from "nuxt-property-decorator";
 
 @Module({
   name: 'table.store.module',
@@ -20,7 +19,6 @@ export default class TableStoreModule extends VuexModule
 
   constructor(args:any) {
     super(args)
-    console.log(container.isRegistered(DependencyInjectionEnum.TableProvider))
     this.tableProvider = container.resolve(DependencyInjectionEnum.TableProvider)
     this.tablePersister = container.resolve(DependencyInjectionEnum.TablePersister)
   }
@@ -60,8 +58,11 @@ export default class TableStoreModule extends VuexModule
   }
 
   @Action
-  async save(table: TableInterface): Promise<TableInterface | undefined> {
-    this.commitTable(await this.tablePersister.save(table))
+  async save(table?: TableInterface): Promise<TableInterface | undefined> {
+    const tableToSave = table || this.table
+    if (tableToSave) {
+      this.commitTable(await this.tablePersister.save(tableToSave))
+    }
     return this.table
   }
 

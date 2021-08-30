@@ -20,7 +20,7 @@
       color="primary"
       fixed
     >
-      <v-btn class="green">
+      <v-btn class="green" @click="onValid ? onValid() : () => {}">
         <span>Valider</span>
         <v-icon>mdi-check</v-icon>
       </v-btn>
@@ -48,8 +48,15 @@ export default class  extends Vue {
   get title() {
     return pageStore.title
   }
+
   get previous() {
     return pageStore.previous
+  }
+  
+  get onValid() {
+    console.log("🚀 ~ file: page.vue ~ line 58 ~ extends ~ getonValid ~ pageStore", pageStore)
+    console.log("🚀 ~ file: page.vue ~ line 61 ~ extends ~ getonValid ~ pageStore.onValid", pageStore.onValid)
+    return pageStore.onValid()
   }
 }
 </script>
