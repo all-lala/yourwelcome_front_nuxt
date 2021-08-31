@@ -10,7 +10,7 @@
             <h2 class="mb-2">Tables</h2>
             <v-badge
               bottom
-              content="6"
+              :content="this.tables.length"
             >
                 <v-btn
                 fab
@@ -31,14 +31,15 @@
             <h2 class="mb-2">Invités</h2>
             <v-badge
               bottom
-              content="80"
+              :content="this.invites.length"
             >
                 <v-btn
                 fab
                 dark
                 x-large
                 outlined
-                color="indigo">
+                color="indigo"
+                to="/invite">
                   <v-icon x-large>
                     mdi-account-multiple
                   </v-icon>
@@ -71,10 +72,19 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import InviteInterface from '~/models/invite/invite.interface'
+import TableInterface from '~/models/table/table.interface'
+import { inviteStore, tableStore } from '~/store'
 
 @Component
 export default class  extends Vue {
+  private tables: TableInterface[] = []
+  private invites: InviteInterface[] = []
 
+  async mounted() {
+    this.tables = await tableStore.findAll()
+    this.invites = await inviteStore.findAll()
+  }
 }
 </script>
 

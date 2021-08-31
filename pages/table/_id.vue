@@ -29,7 +29,7 @@
       ></v-text-field>
       <v-card>
         <v-toolbar
-          color="indigo darken-1"
+          :color="table.inviteMax && table.invites.length > table.inviteMax ? 'red darken-1': 'indigo darken-1'"
           light
         >
           <v-spacer/>
@@ -70,7 +70,7 @@ export default class TableEdit extends Vue {
   private invites: InviteInterface[] = []
   private selectedInvite: InviteInterface = {} as InviteInterface
 
-  mounted() {
+  beforeMount() {
     pageStore.setTitle('Chargement')
     pageStore.setPrevious('/table')
     pageStore.setValidIsVisible(true)

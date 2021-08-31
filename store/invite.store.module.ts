@@ -59,10 +59,11 @@ export default class InviteStoreModule extends VuexModule
   }
 
   @Action
-  async save(invite: InviteInterface): Promise<InviteInterface | undefined> {
-    console.log(invite)
-    const haha = await this.invitePersister.save(invite)
-    //this.commitInvite(haha)
+  async save(invite?: InviteInterface): Promise<InviteInterface | undefined> {
+    const inviteToSave = invite || this.invite
+    if (inviteToSave) {
+      this.commitInvite(await this.invitePersister.save(inviteToSave))
+    }
     return this.invite
   }
 
