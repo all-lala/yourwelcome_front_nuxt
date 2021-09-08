@@ -31,7 +31,6 @@ export default class InviteEdit extends Vue {
   }
 
   get invite() {
-    console.log("🚀 ~ file: index.vue ~ line 36 ~ InviteEdit ~ getinvite ~ inviteStore.invite", inviteStore.invite)
     pageStore.setTitle(inviteStore.invite ? this.getTitle(inviteStore.invite) : 'Chargement')
     return inviteStore.invite || {} as InviteInterface
   }

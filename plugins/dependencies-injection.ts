@@ -15,8 +15,13 @@ import InviteProviderLocalStorage from "../services/providers/invite/invite.prov
 import TableProviderInterface from "../services/providers/table/table.provider.interface";
 import TableProviderLocalStorage from "../services/providers/table/table.provider.local";
 import { DependencyInjectionEnum } from "./dependencie-injection.enum";
+import LoginPassAuthInterface from "~/services/providers/auth/login.pass.auth.interface";
+import LoginPassAuthLocalStorage from "~/services/providers/auth/login.pass.auth.local";
+import { Inject } from "@nuxt/types/app";
+import UserProviderInterface from "~/services/providers/user/user.provider.interface";
+import UserProviderLocalStorage from "~/services/providers/user/user.provider.local";
 
-export default function dependencyInjection()
+function dependencyInjection()
 {
     const BACKEND_TYPE_LOCALSTORAGE = 'LocalStorage'
     
@@ -51,11 +56,11 @@ export default function dependencyInjection()
                 container.register<InvitePersisterInterface>(DependencyInjectionEnum.InvitePersister, { useFactory: instanceCachingFactory<InvitePersisterInterface>(c => c.resolve(InvitePersisterLocalStorage)) })
                 container.register<TableProviderInterface>(DependencyInjectionEnum.TableProvider, { useFactory: instanceCachingFactory<TableProviderInterface>(c => c.resolve(TableProviderLocalStorage)) })
                 container.register<TablePersisterInterface>(DependencyInjectionEnum.TablePersister, { useFactory: instanceCachingFactory<TablePersisterInterface>(c => c.resolve(TablePersisterLocalStorage)) })
+                container.register<LoginPassAuthInterface>(DependencyInjectionEnum.LoginPassAuthProvider, { useFactory: instanceCachingFactory<LoginPassAuthInterface>(c => c.resolve(LoginPassAuthLocalStorage)) })
+                container.register<UserProviderInterface>(DependencyInjectionEnum.UserProvider, { useFactory: instanceCachingFactory<UserProviderInterface>(c => c.resolve(UserProviderLocalStorage)) })
                 break
-            }
         }
-
-    return container
+    }
 }
 
-dependencyInjection()
+export default dependencyInjection()

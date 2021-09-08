@@ -16,4 +16,6 @@ export enum DependencyInjectionEnum {
     TableProvider = 'TableProvider',
     InvitePersister = 'InvitePersister',
     TablePersister = 'TablePersister',
+    LoginPassAuthProvider = 'LoginPassAuthProvider',
+    UserProvider = 'UserProvider',
 }

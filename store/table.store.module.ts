@@ -14,17 +14,18 @@ import TableProviderInterface from "~/services/providers/table/table.provider.in
 })
 export default class TableStoreModule extends VuexModule
 {
-  public tableProvider!: TableProviderInterface
-  public tablePersister!: TablePersisterInterface
+  // DI
+  tableProvider!: TableProviderInterface
+  tablePersister!: TablePersisterInterface
+
+  tables: TableInterface[] = []
+  table: TableInterface | null = null
 
   constructor(args:any) {
     super(args)
     this.tableProvider = container.resolve(DependencyInjectionEnum.TableProvider)
     this.tablePersister = container.resolve(DependencyInjectionEnum.TablePersister)
   }
-
-  tables: TableInterface[] = []
-  table?: TableInterface = {} as TableInterface
 
   @Mutation
   commitTables(tables: TableInterface[]) {
@@ -33,7 +34,7 @@ export default class TableStoreModule extends VuexModule
 
   @Mutation
   commitTable(table: TableInterface | undefined) {
-    this.table = table
+    this.table = table || null
   }
 
   @Mutation
@@ -51,14 +52,14 @@ export default class TableStoreModule extends VuexModule
   }
 
   @Action
-  async find(id: string): Promise<TableInterface | undefined> {
+  async find(id: string): Promise<TableInterface | null> {
     this.commitTable(undefined)
     this.commitTable(await this.tableProvider.find(id))
     return this.table
   }
 
   @Action
-  async save(table?: TableInterface): Promise<TableInterface | undefined> {
+  async save(table?: TableInterface): Promise<TableInterface | null> {
     const tableToSave = table || this.table
     if (tableToSave) {
       this.commitTable(await this.tablePersister.save(tableToSave))
@@ -67,7 +68,7 @@ export default class TableStoreModule extends VuexModule
   }
 
   @Action
-  async add(): Promise<TableInterface | undefined> {
+  async add(): Promise<TableInterface | null> {
     this.commitTable(this.tableProvider.create())
     return this.table
   }

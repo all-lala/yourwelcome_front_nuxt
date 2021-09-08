@@ -1,5 +1,8 @@
 <template>
   <v-app>
+    <div class="text-center">
+      <h1 class="title-font">YourWelcome</h1>
+    </div>
     <v-main>
       <v-container>
         <Nuxt />
@@ -13,3 +16,14 @@
     </v-footer>
   </v-app>
 </template>
+
+<style scoped>
+.text-center {
+  text-align: center;
+}
+
+.title-font {
+  font-family: 'Adine Kirnberg';
+  font-size: 6rem;
+}
+</style>

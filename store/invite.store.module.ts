@@ -14,18 +14,18 @@ import InviteProviderInterface from "~/services/providers/invite/invite.provider
 })
 export default class InviteStoreModule extends VuexModule
 {
-  public inviteProvider!: InviteProviderInterface
-  public invitePersister!: InvitePersisterInterface
+  // DI
+  inviteProvider!: InviteProviderInterface
+  invitePersister!: InvitePersisterInterface
+
+  invites: InviteInterface[] = []
+  invite: InviteInterface | null = null
 
   constructor(args:any) {
     super(args)
-    console.log(container.isRegistered(DependencyInjectionEnum.InviteProvider))
     this.inviteProvider = container.resolve(DependencyInjectionEnum.InviteProvider)
     this.invitePersister = container.resolve(DependencyInjectionEnum.InvitePersister)
   }
-
-  invites: InviteInterface[] = []
-  invite?: InviteInterface = {} as InviteInterface
 
   @Mutation
   commitInvites(invites: InviteInterface[]) {
@@ -34,7 +34,7 @@ export default class InviteStoreModule extends VuexModule
 
   @Mutation
   commitInvite(invite: InviteInterface | undefined) {
-    this.invite = invite
+    this.invite = invite || null
   }
 
   @Mutation
@@ -52,14 +52,14 @@ export default class InviteStoreModule extends VuexModule
   }
 
   @Action
-  async find(id: string): Promise<InviteInterface | undefined> {
+  async find(id: string): Promise<InviteInterface | null> {
     this.commitInvite(undefined)
     this.commitInvite(await this.inviteProvider.find(id))
     return this.invite
   }
 
   @Action
-  async save(invite?: InviteInterface): Promise<InviteInterface | undefined> {
+  async save(invite?: InviteInterface): Promise<InviteInterface | null> {
     const inviteToSave = invite || this.invite
     if (inviteToSave) {
       this.commitInvite(await this.invitePersister.save(inviteToSave))
@@ -68,7 +68,7 @@ export default class InviteStoreModule extends VuexModule
   }
 
   @Action
-  async add(): Promise<InviteInterface | undefined> {
+  async add(): Promise<InviteInterface | null> {
     this.commitInvite(this.inviteProvider.create())
     return this.invite
   }

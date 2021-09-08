@@ -36,6 +36,11 @@ export default {
   plugins: [
     '~/plugins/dependencies-injection.ts'
   ],
+  router: {
+    middleware: [
+      'authenticated'
+    ],
+  },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
