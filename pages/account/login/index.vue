@@ -2,7 +2,7 @@
   <v-container>
     <v-row class>
       <v-col offset-lg="3" lg="6" >
-        <v-form ref="loginForm" v-model="valid">
+        <v-form ref="loginForm" v-model="valid" >
           <v-card>
             <v-toolbar color="blue">
               <v-toolbar-title>
@@ -11,8 +11,11 @@
             </v-toolbar>
             <v-card-text>
                 <v-text-field label="Identifiant" v-model="login" :rules="loginRules" clearable/>
-                <v-text-field label="Mot de passe" type="password" v-model="password" clearable/>
+                <v-text-field label="Mot de passe" type="password" v-model="password" :rules="passwordRules" clearable/>
             </v-card-text>
+            <v-slide-y-transition>
+              <v-card-text class="red text-center font-weight-bold body-1" v-if="loginError">{{ loginError }}</v-card-text>
+            </v-slide-y-transition>
             <v-card-actions>
               <v-btn to="/account/create" color="secondary" text>
                 Créer un compte
@@ -40,6 +43,8 @@ import { userStore } from '~/store'
 export default class LoginAccount extends Vue {
   // Auth Service
   private loginPassAuthProvider: LoginPassAuthInterface = container.resolve(DependencyInjectionEnum.LoginPassAuthProvider)
+
+  private loginError = ''
   
   private login: string = ''
   private readonly loginRules = [
@@ -49,15 +54,14 @@ export default class LoginAccount extends Vue {
   private password: string = ''
   private readonly passwordRules = [
         (v: string) => !!v || 'Le mot de passe est requis',
-        (v: string) => v.length > 7 || 'Le mot de passe doit avoir au moins 8 charactères',
       ]
   private loading: boolean = false
   private valid: boolean = true
 
   connexion() {
-    this.loading = true
-    
+    this.loginError = ''
     if((this.$refs.loginForm! as any) .validate()) {
+      this.loading = true
       this.loginPassAuthProvider.connect(this.login, this.password).then(result => {
         if (result) {
           userStore.findMe().then(() => {
@@ -67,6 +71,7 @@ export default class LoginAccount extends Vue {
         } else {
           this.loading = false
           this.valid = false
+          this.loginError = 'Le couple login mot de passe est erroné!'
         }
       })
     }

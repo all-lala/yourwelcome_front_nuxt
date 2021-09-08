@@ -2,9 +2,17 @@ import { Context, Middleware } from '@nuxt/types'
 import { userStore } from '~/store'
 
 const authenticatedMiddleware: Middleware = (context) => {
-  if (!isAccountRoute(context) && !isHomePage(context) && !userStore?.user?.id) {
+  if (isSecuredRoutes(context) && !isUserConnected()) {
     return context.redirect('/account/login')
   }
+}
+
+function isUserConnected():boolean {
+  return !!userStore.me?.id
+}
+
+function isSecuredRoutes(context: Context): boolean {
+  return !isAccountRoute(context) && !isHomePage(context)
 }
 
 function isAccountRoute(context: Context): boolean {

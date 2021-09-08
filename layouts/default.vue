@@ -5,7 +5,9 @@
     </div>
     <v-main>
       <v-container>
+        <v-fade-transition>
         <Nuxt />
+        </v-fade-transition>
       </v-container>
     </v-main>
     <v-footer

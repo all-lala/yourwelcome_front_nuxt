@@ -12,7 +12,9 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        <Nuxt />
+        <v-slide-x-transition>
+          <Nuxt />
+        </v-slide-x-transition>
       </v-container>
     </v-main>
     <v-bottom-navigation
