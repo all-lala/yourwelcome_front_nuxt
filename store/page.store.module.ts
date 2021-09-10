@@ -14,7 +14,7 @@ export default class PageStoreModule extends VuexModule
   onValidMethod: () => void = () => {}
 
   get onValid() {
-    return this.onValidMethod
+    return this.onValidMethod()
   }
 
   @Mutation
@@ -50,10 +50,14 @@ export default class PageStoreModule extends VuexModule
   @Action
   setValidIsVisible(validIsVisible: boolean) {
     this.commitValidIsVisible(validIsVisible)
+    if (!validIsVisible) {
+      this.commitOnValid(() => {})
+    }
   }
 
   @Action
   setOnValid(onValid: () => void) {
+    console.log('change on valid', onValid)
     this.commitOnValid(onValid)
   }
 }
